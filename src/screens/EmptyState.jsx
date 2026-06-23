@@ -1,36 +1,43 @@
 import { useNavigate } from 'react-router-dom';
-import { Upload } from 'lucide-react';
 
 export default function EmptyState() {
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-[#F6FBFF] flex flex-col items-center justify-center px-5 pb-20">
-      <div className="w-full max-w-sm text-center">
-        <div className="w-32 h-32 rounded-full bg-[#DCE9FF] flex items-center justify-center mx-auto mb-6">
+      {/* Top nav */}
+      <div className="fixed top-0 left-0 right-0 h-14 flex items-center px-4 bg-white border-b border-[#e0eaf1] z-30">
+        <span className="text-[15px] font-bold text-[#0b2a3b] flex-1">Mycheckups.io</span>
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0B7BFF] to-[#2EC4B6] flex items-center justify-center">
+          <span className="text-white text-xs font-bold">OK</span>
+        </div>
+      </div>
+
+      <div className="w-full max-w-sm text-center mt-14">
+        <div className="w-28 h-28 rounded-full bg-[#ddebff] flex items-center justify-center mx-auto mb-6">
           <span className="text-5xl">🩺</span>
         </div>
-        <h2 className="text-2xl font-extrabold text-[#0B2A3B] mb-3">No reports yet</h2>
-        <p className="text-[#6B7787] mb-8 leading-relaxed">
-          Upload your first lab report to start tracking your health and getting personalized insights.
+        <h2 className="text-[22px] font-extrabold text-[#0b2a3b] mb-3">No Reports Yet</h2>
+        <p className="text-[13px] text-[#6b7785] mb-8 leading-relaxed">
+          Upload your first health checkup to start tracking your results. We'll help you visualise trends and compare over time.
         </p>
-        <button onClick={() => navigate('/upload')}
-          className="w-full bg-[#0B7BFF] text-white font-bold py-4 rounded-2xl active:scale-95 transition-transform shadow-lg shadow-blue-200 flex items-center justify-center gap-2 mb-4">
-          <Upload size={20} /> Upload First Report
-        </button>
-        <button onClick={() => navigate('/dashboard')} className="text-sm text-[#6B7787]">
-          Back to dashboard
-        </button>
 
-        {/* Tips */}
-        <div className="mt-10 flex flex-col gap-3 text-left">
+        <button onClick={() => navigate('/upload')}
+          className="w-full bg-[#0B7BFF] text-white font-bold py-4 rounded-xl active:scale-95 transition-transform shadow-lg shadow-blue-100 text-[15px] mb-4">
+          + Upload Your First Report
+        </button>
+        <p className="text-[11px] text-[#6b7785]">Supports PDF, PNG, JPG · up to 20MB · all panel types</p>
+
+        {/* Feature tiles */}
+        <div className="flex gap-3 mt-8">
           {[
-            { emoji: '📋', tip: 'Supports CBC, Lipid Panel, Metabolic, Thyroid & more' },
-            { emoji: '🔒', tip: 'Your data is encrypted and HIPAA compliant' },
-            { emoji: '📊', tip: 'Track trends and get AI-powered insights instantly' },
+            { emoji: '📋', label: 'Upload', desc: 'Add PDF or image file' },
+            { emoji: '📈', label: 'Track', desc: 'See trends over time' },
+            { emoji: '💬', label: 'Consult', desc: 'Get doctor insights' },
           ].map(t => (
-            <div key={t.tip} className="flex items-start gap-3 p-3 bg-white rounded-xl border border-[#E0EAF1]">
-              <span className="text-xl">{t.emoji}</span>
-              <p className="text-sm text-[#6B7787]">{t.tip}</p>
+            <div key={t.label} className="flex-1 bg-white rounded-xl border border-[#e0eaf1] p-3 text-center">
+              <div className="text-xl mb-1">{t.emoji}</div>
+              <p className="text-[11px] font-bold text-[#0b2a3b]">{t.label}</p>
+              <p className="text-[10px] text-[#6b7785] mt-0.5">{t.desc}</p>
             </div>
           ))}
         </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Share2, Download, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { ArrowLeft, Share2, Download } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import BottomNav from '../components/BottomNav.jsx';
 import Badge from '../components/Badge.jsx';
@@ -8,12 +8,9 @@ import { parameters, cholesterolTrend, doctorComments } from '../data/sampleData
 
 const tabs = ['Results', 'Trends', 'Comments'];
 
-function StatusIcon({ status }) {
-  if (status === 'normal') return <span className="text-[#22C55E] font-bold text-xs">✓</span>;
-  if (status === 'high') return <TrendingUp size={14} className="text-[#EF4444]" />;
-  if (status === 'low') return <TrendingDown size={14} className="text-[#0B7BFF]" />;
-  return <Minus size={14} className="text-[#6B7787]" />;
-}
+const statusIcon = s => s === 'ok' ? <span className="text-[#22c55e] font-bold">✓</span>
+  : s === 'needs-review' ? <span className="text-[#EF4444] text-sm">↑</span>
+  : <span className="text-[#6b7785]">—</span>;
 
 export default function ReportDetail() {
   const navigate = useNavigate();
@@ -21,135 +18,119 @@ export default function ReportDetail() {
 
   return (
     <div className="min-h-screen bg-[#F6FBFF] pb-20">
-      <header className="flex items-center h-14 px-4 bg-white border-b border-[#E0EAF1] sticky top-0 z-30">
+      <header className="flex items-center h-14 px-4 bg-white border-b border-[#e0eaf1] sticky top-0 z-30">
         <button onClick={() => navigate('/dashboard')} className="p-1 -ml-1">
-          <ArrowLeft size={22} className="text-[#0B2A3B]" />
+          <ArrowLeft size={21} className="text-[#0b2a3b]" />
         </button>
-        <span className="flex-1 text-center font-semibold text-[#0B2A3B]">Report Detail</span>
+        <span className="flex-1 text-center font-semibold text-[#0b2a3b] text-[15px]">Report Detail</span>
         <div className="flex gap-2">
-          <button className="p-1"><Share2 size={20} className="text-[#0B2A3B]" /></button>
-          <button className="p-1"><Download size={20} className="text-[#0B2A3B]" /></button>
+          <button className="p-1"><Share2 size={19} className="text-[#0b2a3b]" /></button>
+          <button className="p-1"><Download size={19} className="text-[#0b2a3b]" /></button>
         </div>
       </header>
 
-      <div className="max-w-2xl mx-auto px-4 py-5">
-        {/* Report meta */}
-        <div className="bg-white rounded-2xl border border-[#E0EAF1] p-4 mb-4">
-          <div className="flex items-start justify-between mb-2">
+      <div className="max-w-xl mx-auto px-4 py-4">
+        {/* Meta */}
+        <div className="bg-white rounded-xl border border-[#e0eaf1] p-4 mb-4">
+          <div className="flex items-start justify-between mb-3">
             <div>
-              <h2 className="font-extrabold text-[#0B2A3B] text-lg leading-tight">Complete Blood Count</h2>
-              <p className="text-sm text-[#6B7787] mt-0.5">Mar 15, 2024 · Dr. S. Ivanov</p>
+              <h2 className="font-extrabold text-[#0b2a3b] text-[17px] leading-tight">Complete Blood Count</h2>
+              <p className="text-[12px] text-[#6b7785] mt-0.5">Sep 12, 2025 · Dr. S. Ivanov</p>
             </div>
-            <Badge status="flagged" flags={2} />
+            <Badge status="parsed" />
           </div>
-          <div className="flex gap-4 pt-3 border-t border-[#E0EAF1]">
-            <div className="text-center">
-              <p className="text-lg font-extrabold text-[#0B2A3B]">6</p>
-              <p className="text-xs text-[#6B7787]">Markers</p>
-            </div>
-            <div className="text-center">
-              <p className="text-lg font-extrabold text-[#22C55E]">4</p>
-              <p className="text-xs text-[#6B7787]">Normal</p>
-            </div>
-            <div className="text-center">
-              <p className="text-lg font-extrabold text-[#EF4444]">2</p>
-              <p className="text-xs text-[#6B7787]">Flags</p>
-            </div>
+          <div className="flex gap-5 pt-3 border-t border-[#e0eaf1]">
+            <div><p className="text-[17px] font-extrabold text-[#0b2a3b]">6</p><p className="text-[11px] text-[#6b7785]">Markers</p></div>
+            <div><p className="text-[17px] font-extrabold text-[#22c55e]">5</p><p className="text-[11px] text-[#6b7785]">OK</p></div>
+            <div><p className="text-[17px] font-extrabold text-[#EF4444]">1</p><p className="text-[11px] text-[#6b7785]">Needs Review</p></div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex bg-white rounded-2xl border border-[#E0EAF1] p-1 mb-4">
+        <div className="flex bg-white rounded-xl border border-[#e0eaf1] p-1 mb-4">
           {tabs.map(t => (
             <button key={t} onClick={() => setTab(t)}
-              className={`flex-1 py-2 text-sm font-semibold rounded-xl transition-all
-                ${tab === t ? 'bg-[#0B7BFF] text-white shadow' : 'text-[#6B7787]'}`}>
+              className={`flex-1 py-2 text-[13px] font-semibold rounded-lg transition-all
+                ${tab === t ? 'bg-[#0B7BFF] text-white' : 'text-[#6b7785]'}`}>
               {t}
             </button>
           ))}
         </div>
 
-        {/* Results tab */}
+        {/* Results */}
         {tab === 'Results' && (
           <div className="flex flex-col gap-2">
-            {/* Header row */}
-            <div className="flex items-center px-4 py-2 text-xs font-semibold text-[#6B7787]">
+            <div className="flex px-4 py-2 text-[11px] font-semibold text-[#6b7785]">
               <span className="flex-1">Parameter</span>
               <span className="w-20 text-right">Value</span>
-              <span className="w-20 text-right">Range</span>
-              <span className="w-12 text-right">Status</span>
+              <span className="w-16 text-right">Range</span>
+              <span className="w-8 text-right" />
             </div>
             {parameters.map(p => (
-              <div key={p.name} className={`flex items-center px-4 py-3 rounded-2xl border
-                ${p.status === 'high' ? 'bg-red-50 border-red-100' : p.status === 'low' ? 'bg-blue-50 border-blue-100' : 'bg-white border-[#E0EAF1]'}`}>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-[#0B2A3B]">{p.name}</p>
-                </div>
+              <div key={p.name} className={`flex items-center px-4 py-3 rounded-xl border
+                ${p.status === 'needs-review' ? 'bg-[#fde8e8]/40 border-[#fde8e8]' : 'bg-white border-[#e0eaf1]'}`}>
+                <div className="flex-1"><p className="text-[13px] font-semibold text-[#0b2a3b]">{p.name}</p></div>
                 <div className="w-20 text-right">
-                  <p className={`text-sm font-bold ${p.status === 'high' ? 'text-[#EF4444]' : p.status === 'low' ? 'text-[#0B7BFF]' : 'text-[#0B2A3B]'}`}>
-                    {p.value} <span className="text-xs font-normal text-[#6B7787]">{p.unit}</span>
-                  </p>
+                  <span className={`text-[13px] font-bold ${p.status === 'needs-review' ? 'text-[#EF4444]' : 'text-[#0b2a3b]'}`}>
+                    {p.value}
+                  </span>
+                  <span className="text-[10px] text-[#6b7785] ml-0.5">{p.unit}</span>
                 </div>
-                <div className="w-20 text-right">
-                  <p className="text-xs text-[#6B7787]">{p.range}</p>
-                </div>
-                <div className="w-12 flex justify-end">
-                  <StatusIcon status={p.status} />
-                </div>
+                <div className="w-16 text-right text-[11px] text-[#6b7785]">{p.range}</div>
+                <div className="w-8 text-right">{statusIcon(p.status)}</div>
               </div>
             ))}
           </div>
         )}
 
-        {/* Trends tab */}
+        {/* Trends */}
         {tab === 'Trends' && (
-          <div className="bg-white rounded-2xl border border-[#E0EAF1] p-4">
-            <h3 className="font-bold text-[#0B2A3B] mb-1">Cholesterol Trend</h3>
-            <p className="text-xs text-[#6B7787] mb-4">Target: &lt;200 mg/dL</p>
-            <ResponsiveContainer width="100%" height={220}>
-              <LineChart data={cholesterolTrend} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E0EAF1" />
-                <XAxis dataKey="label" tick={{ fontSize: 11, fill: '#6B7787' }} />
-                <YAxis tick={{ fontSize: 11, fill: '#6B7787' }} domain={[150, 230]} />
-                <Tooltip
-                  contentStyle={{ borderRadius: 12, border: '1px solid #E0EAF1', fontSize: 12 }}
-                  formatter={v => [`${v} mg/dL`, 'Cholesterol']}
-                />
-                <ReferenceLine y={200} stroke="#EF4444" strokeDasharray="4 4" label={{ value: 'Limit', fill: '#EF4444', fontSize: 10 }} />
-                <Line type="monotone" dataKey="value" stroke="#0B7BFF" strokeWidth={2.5} dot={{ r: 5, fill: '#0B7BFF', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 7 }} />
+          <div className="bg-white rounded-xl border border-[#e0eaf1] p-4">
+            <h3 className="font-bold text-[#0b2a3b] text-[15px] mb-1">Cholesterol Trend</h3>
+            <p className="text-[12px] text-[#6b7785] mb-4">Target: &lt;200 mg/dL</p>
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={cholesterolTrend} margin={{ top: 5, right: 10, left: -15, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e0eaf1" />
+                <XAxis dataKey="label" tick={{ fontSize: 10, fill: '#6b7785' }} />
+                <YAxis tick={{ fontSize: 10, fill: '#6b7785' }} domain={[150, 220]} />
+                <Tooltip contentStyle={{ borderRadius: 10, border: '1px solid #e0eaf1', fontSize: 12 }}
+                  formatter={v => [`${v} mg/dL`, 'Cholesterol']} />
+                <ReferenceLine y={200} stroke="#EF4444" strokeDasharray="4 4" />
+                <Line type="monotone" dataKey="value" stroke="#0B7BFF" strokeWidth={2.5}
+                  dot={{ r: 4, fill: '#0B7BFF', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
               </LineChart>
             </ResponsiveContainer>
-            <div className="flex items-center gap-2 mt-3 p-3 bg-[#E0FAE9] rounded-xl">
-              <span className="text-lg">📉</span>
-              <p className="text-xs text-[#0B2A3B]"><span className="font-bold text-[#22C55E]">↓ 19%</span> improvement from Dec 2023 to Jun 2024</p>
+            <div className="flex items-center gap-2 mt-3 p-3 bg-[#e0f9e9] rounded-xl">
+              <span>📉</span>
+              <p className="text-[12px] text-[#0b2a3b]"><span className="font-bold text-[#22c55e]">▼ 19%</span> improvement — Dec 2024 to Sep 2025</p>
             </div>
           </div>
         )}
 
-        {/* Comments tab */}
+        {/* Comments */}
         {tab === 'Comments' && (
           <div className="flex flex-col gap-3">
             {doctorComments.map(c => (
-              <div key={c.id} className="bg-white rounded-2xl border border-[#E0EAF1] p-4">
+              <div key={c.id} className="bg-white rounded-xl border border-[#e0eaf1] p-4">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0B7BFF] to-[#2EC4B6] flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#0B7BFF] to-[#2EC4B6] flex items-center justify-center flex-shrink-0">
                     <span className="text-white text-xs font-bold">{c.initials}</span>
                   </div>
                   <div>
-                    <p className="font-semibold text-[#0B2A3B] text-sm">{c.doctor}</p>
-                    <p className="text-xs text-[#6B7787]">{c.date}</p>
+                    <p className="font-semibold text-[#0b2a3b] text-[13px]">{c.doctor}</p>
+                    <p className="text-[11px] text-[#6b7785]">{c.date}</p>
                   </div>
                 </div>
-                <p className="text-sm text-[#0B2A3B] leading-relaxed">{c.text}</p>
+                <p className="text-[13px] text-[#0b2a3b] leading-relaxed">{c.text}</p>
               </div>
             ))}
-            <button onClick={() => navigate('/comments')} className="w-full py-3 border-2 border-dashed border-[#E0EAF1] rounded-2xl text-sm text-[#0B7BFF] font-semibold">
+            <button onClick={() => navigate('/comments')}
+              className="w-full py-3 border-2 border-dashed border-[#e0eaf1] rounded-xl text-[13px] text-[#0B7BFF] font-semibold">
               + Request doctor comment
             </button>
           </div>
         )}
       </div>
-
       <BottomNav />
     </div>
   );
